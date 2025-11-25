@@ -114,12 +114,12 @@ Este projeto utiliza a **API E1_Impressora** da Elgin. Documentação completa d
 
 ## 🎓 Conceitos Aplicados
 
-- ✅ Carregamento dinâmico de bibliotecas (DLL)
-- ✅ Manipulação de strings
-- ✅ Entrada/saída formatada
-- ✅ Estruturas condicionais (switch-case)
-- ✅ Laços de repetição (while)
-- ✅ Variáveis globais e estáticas
+- ✅ Carregamento dinâmico de bibliotecas (DLL);
+- ✅ Manipulação de strings;
+- ✅ Entrada/saída formatada;
+- ✅ Estruturas condicionais (switch-case);
+- ✅ Laços de repetição (while);
+- ✅ Variáveis globais e estáticas.
 
 ---
 
