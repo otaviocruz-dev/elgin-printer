@@ -121,6 +121,15 @@ Este projeto utiliza a **API E1_Impressora** da Elgin. Documentação completa d
 - ✅ Laços de repetição (while);
 - ✅ Variáveis globais e estáticas.
 
+## 🧙‍♂️ Autores
+
+- Arthur Lima Santos;
+- Fredson Vicente;
+- Gustavo Dias de Sousa;
+- Igor Medeiros Miguel;
+- Lucas Libano Gomes da Silva;
+- Otávio Henrique Moraes Cruz.
+
 ---
 
 <p align="center">
