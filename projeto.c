@@ -6,7 +6,7 @@
 /* ======================= Config DLL ======================= */
 static HMODULE g_hDll = NULL;
 
-/* Convenção de chamada (Windows): __stdcall */
+/* Conven??o de chamada (Windows): __stdcall */
 #ifndef CALLCONV
 #  define CALLCONV WINAPI
 #endif
@@ -41,7 +41,7 @@ static ImprimeXMLSAT_t                ImprimeXMLSAT                = NULL;
 static ImprimeXMLCancelamentoSAT_t    ImprimeXMLCancelamentoSAT    = NULL;
 static InicializaImpressora_t         InicializaImpressora         = NULL;
 
-/* ======================= Configuração ======================= */
+/* ======================= Configura??o ======================= */
 static int   g_tipo      = 1;
 static char  g_modelo[64] = "i9";
 static char  g_conexao[128] = "USB";
@@ -53,7 +53,7 @@ static int   g_conectada = 0;
     do {                                                                         \
         name = (name##_t)GetProcAddress((HMODULE)(h), #name);                    \
         if (!(name)) {                                                           \
-            fprintf(stderr, "Falha ao resolver símbolo %s (erro=%lu)\n",         \
+            fprintf(stderr, "Falha ao resolver s?mbolo %s (erro=%lu)\n",         \
                     #name, GetLastError());                                      \
             return 0;                                                            \
         }                                                                        \
@@ -64,7 +64,7 @@ static void flush_entrada(void) {
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
-/* ======================= Funções para manipular a DLL ======================= */
+/* ======================= Fun??es para manipular a DLL ======================= */
 static int carregarFuncoes(void)
 {
     g_hDll = LoadLibraryA("E1_Impressora01.dll");
@@ -98,7 +98,7 @@ static void liberarBiblioteca(void)
     }
 }
 
-/* ======================= Funções a serem implementadas pelos alunos ======================= */
+/* ======================= Fun??es a serem implementadas pelos alunos ======================= */
 
 static void exibirMenu(void)
 {   
@@ -174,7 +174,7 @@ static void configurarConexao(void)
     scanf(" %s", &modelo);
     flush_entrada();
     
-    //3.Solicitar tipo de Conexão
+    //3.Solicitar tipo de Conex?o
 
 	printf("\n");
     printf("Digite o tipo de parametro\n");
@@ -204,13 +204,13 @@ static void configurarConexao(void)
 	//Parametro USB e Bluetooth o parametro e O
 	
 	
-	//5. SALVAR NAS VARIÁVEIS GLOBAIS
+	//5. SALVAR NAS VARI?VEIS GLOBAIS
 	g_tipo = tipo;
 	strcpy(g_modelo,modelo);
 	strcpy(g_conexao, conexao);
 	g_parametro = parametro;
 	
-	// 6. CONFIRMAÇÃO
+	// 6. CONFIRMA??O
 	printf("\nCONFIGURACAO SALVA: \n");
 	printf("Tipo: %d, Modelo: %s, Conexao: %s, Parametro: %d\n", g_tipo, g_modelo, g_conexao, g_parametro);
 }
@@ -241,15 +241,16 @@ static void fecharConexao(void)
     int retorno = FechaConexaoImpressora();
 
     if (retorno == 0) {
-        printf("Conexão com a impressora encerrada com sucesso.\n");
+        printf("Conex?o com a impressora encerrada com sucesso.\n");
     } else {
-        printf("Erro ao fechar conexão com a impressora. Código de erro: %d\n", retorno);
-        // Consultar GER_Erro_Conexao para interpretar o código
+        printf("Erro ao fechar conex?o com a impressora. C?digo de erro: %d\n", retorno);
+        // Consultar GER_Erro_Conexao para interpretar o c?digo
     }
 }
 
 static void imprimirTexto(void)
 {
+	if (g_conectada == 0){
 	char texto[200];
 	int posicao;            
     int estilo;            
@@ -324,10 +325,16 @@ static void imprimirTexto(void)
     AvancaPapel(5);
     Corte(1);
 }
+	
+	else {
+		printf("Conecte a impressora");
+	}
+}
 
 static void imprimirQRCode(void)
 {
-	char texto[200]; 
+	if (g_conectada == 0){
+		char texto[200]; 
 
     printf("Digite o conteudo do QR Code: \n");
 	fgets(texto, 200, stdin);
@@ -345,11 +352,16 @@ static void imprimirQRCode(void)
 
     AvancaPapel(5);
     Corte(1);
+	}
+	else {
+		printf("Conecte a impressora");
+	}
 }
 
 static void imprimirCodigoBarras(void)
 {
-	// tipo: 8 (EAN-13), codigo, altura: 100, largura: 2, HRI: 3
+	if (g_conectada == 0){
+		// tipo: 8 (EAN-13), codigo, altura: 100, largura: 2, HRI: 3
     int ret = ImpressaoCodigoBarras(8, "{A012345678912", 100, 2, 3);
     
     if (ret == 0) {
@@ -360,15 +372,20 @@ static void imprimirCodigoBarras(void)
     
     AvancaPapel(5);
 	Corte(1);
+	}
+	else {
+		printf("Conecte a impressora");
+	}
 }
 
 static void imprimirXMLSAT(void)
 {
+	if (g_conectada == 0){
 	const char *caminho = "path=./XMLSAT.xml";
     int g_parametro = 0;
 
     if (!ImprimeXMLSAT) {
-        printf("Função ImprimeXMLSAT nao carregada.\n");
+        printf("Fun??o ImprimeXMLSAT nao carregada.\n");
         return;
     }
 
@@ -382,11 +399,17 @@ static void imprimirXMLSAT(void)
         
     AvancaPapel(5);
     Corte(1);
+	}
+	else {
+		printf("Conecte a impressora");
+	}
 }
 
 static void imprimirXMLCancelamentoSAT(void)
 {  
-    const char *xmlPath = "path=./CANC_SAT.xml";
+
+	if (g_conectada == 0){
+		const char *xmlPath = "path=./CANC_SAT.xml";
 
     // Assinatura do QRCode
     const char *assinaturaQRCode =
@@ -397,7 +420,7 @@ static void imprimirXMLCancelamentoSAT(void)
         "p0ccqnZvuE70aHOI09elpjEO6Cd+orI7XHHrFCwhFhAcbalc+ZfO5b/+vkyAHS6C"
         "YVFCDtYR9Hi5qgdk31v23w==";
 
-    // Parâmetro de layout
+    // Parametro de layout
 	//(exemplo: logo + novo layout)
     int param = 65; // 1 (logo) + 64 (novo layout)
 
@@ -410,23 +433,35 @@ static void imprimirXMLCancelamentoSAT(void)
     }
 
     AvancaPapel(5);   
-    Corte(1);  
+    Corte(1);
+	}
+	else {
+		printf("Conecte a impressora");
+	}
+	  
 }
 
 static void abrirGavetaElginOpc(void)
 {
-	// Pino 1, pulso curto (5), tempo de espera 10
+	if (g_conectada == 0){
+	// Pino 1, pulso curto (5), tempo de espera 50
     int ret = AbreGavetaElgin(1, 50, 50);
     
     if (ret == 0) {
         printf("Gaveta Elgin aberta com sucesso!\n");
     } else {
         printf("Erro ao abrir a gaveta Elgin.\n");
-    }
+    	}
+	}
+	else {
+		printf("Conecte a impressora");
+	}
+	
 }
 
 static void abrirGavetaOpc(void)
 {
+	if (g_conectada == 0){
 	// Pino 1, pulso curto (5), tempo de espera 10
     int ret = AbreGaveta(1, 5, 10);
     
@@ -435,10 +470,15 @@ static void abrirGavetaOpc(void)
     } else {
         printf("Erro ao abrir a gaveta.\n");
     }
+	}
+	else {
+		printf("Conecte a impressora");
+	}
 }
 
 static void emitirSinalSonoro(void)
 {
+	if (g_conectada == 0){
 	// 4 beeps, 50ms de duracao, intervalo de 5ms
     int ret = SinalSonoro(4, 50, 5);
     
@@ -447,9 +487,13 @@ static void emitirSinalSonoro(void)
     }  else {
        printf("Erro ao emitir o sinal sonoro.\n");     
     }
+	}
+	else {
+		printf("Conecte a impressora");
+	}
 }
 
-/* ======================= Função principal ======================= */
+/* ======================= Fun??o principal ======================= */
 int main(void)
 {
     if (!carregarFuncoes()) {
@@ -465,7 +509,7 @@ int main(void)
         switch (opcao) {
         	   case 0:
         	   		fecharConexao();
-        			break;
+        			return 0;
         			
                case 1:
                     configurarConexao();
